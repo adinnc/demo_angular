@@ -1,0 +1,17 @@
+<div class="app-grid">
+  <div class="app-card" matRipple
+       *ngFor="let item of filteredItems" 
+       [class.favorite]="item.isFavorite">
+    <div class="action-buttons-container">
+      <button mat-icon-button class="info-button" [matTooltip]="item.info" matTooltipPosition="above">
+        <mat-icon class="info-icon">info</mat-icon>
+      </button>
+      <button mat-icon-button class="favorite-button" (click)="onFavoriteClick(item, $event)" [disableRipple]="true">
+        <mat-icon class="favorite-icon">{{item.isFavorite ? 'star' : 'star_outline'}}</mat-icon>
+      </button>
+    </div>
+    
+    <mat-icon [class]="item.color">{{item.icon}}</mat-icon>
+    <span class="app-name">{{item.name}}</span>
+  </div>
+</div>

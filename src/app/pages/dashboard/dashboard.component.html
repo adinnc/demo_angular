@@ -1,0 +1,14 @@
+<div class="dashboard-container">
+  <div class="section-header">
+    <h2 class="section-title">Quick Launch</h2>
+    <button mat-button color="primary" (click)="toggleShowFavorites()">
+      {{ showFavorites ? 'Show All' : 'Show Favorites' }}
+    </button>
+  </div>
+
+  <lib-app-grid 
+    [items]="apps"
+    [showOnlyFavorites]="showFavorites"
+    (favoriteToggled)="onFavoriteToggled($event)">
+  </lib-app-grid>
+</div>
