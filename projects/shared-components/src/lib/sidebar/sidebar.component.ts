@@ -5,6 +5,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 export interface SidebarItem {
   label: string;
@@ -37,7 +40,10 @@ export interface SidebarItem {
     MatIconModule,
     MatButtonModule,
     MatTooltipModule,
-    RouterModule
+    RouterModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule
   ],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
@@ -78,6 +84,34 @@ export class SidebarComponent {
    * Emits when the collapse state changes
    */
   @Output() collapseStateChanged = new EventEmitter<boolean>();
+
+  /**
+   * Search query for filtering items
+   */
+  searchQuery = '';
+
+  /**
+   * Whether the search input is focused
+   */
+  searchFocused = false;
+
+  /**
+   * Get filtered items based on search query
+   */
+  get filteredItems(): SidebarItem[] {
+    if (!this.searchQuery) return this.items;
+    const query = this.searchQuery.toLowerCase();
+    return this.items.filter(item => 
+      item.label.toLowerCase().includes(query)
+    );
+  }
+
+  /**
+   * Clear the search query
+   */
+  clearSearch(): void {
+    this.searchQuery = '';
+  }
 
   toggleCollapse(): void {
     this.isCollapsed = !this.isCollapsed;

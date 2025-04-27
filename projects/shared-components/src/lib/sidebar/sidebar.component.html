@@ -1,12 +1,31 @@
 <nav class="sidebar" [class.collapsed]="isCollapsed" [class.dark-theme]="theme === 'dark'" role="navigation" aria-label="Main navigation">
   <div class="sidebar-header">
-    <h2 class="header-text" *ngIf="headerText && !isCollapsed">{{ headerText }}</h2>
+    <mat-form-field appearance="fill" class="search-field" *ngIf="!isCollapsed">
+      <mat-icon matPrefix class="search-icon">search</mat-icon>
+      <input 
+        matInput 
+        [(ngModel)]="searchQuery" 
+        placeholder="Search navigation"
+        #searchInput
+        (focus)="searchFocused = true"
+        (blur)="searchFocused = false"
+      >
+      <button 
+        mat-icon-button 
+        matSuffix 
+        *ngIf="searchQuery"
+        (click)="clearSearch()"
+        [attr.aria-label]="'Clear search'"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
   </div>
 
   <mat-nav-list>
     <a 
       mat-list-item 
-      *ngFor="let item of items; let i = index"
+      *ngFor="let item of filteredItems; let i = index"
       [routerLink]="item.route"
       [routerLinkActive]="['active']"
       [attr.aria-current]="i === activeItemIndex ? 'page' : null"
