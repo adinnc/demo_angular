@@ -1,14 +1,36 @@
 <div class="dashboard-container">
+  <div class="search-bar">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Search Apps</mat-label>
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput [(ngModel)]="searchText" placeholder="Search apps">
+      <button *ngIf="searchText" matSuffix mat-icon-button aria-label="Clear" (click)="searchText=''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+  <app-subnav 
+    [items]="subnavItems" 
+    [showIcons]="true"
+    (itemSelected)="setActiveView($event.action ? '' : $event.label.toLowerCase())">
+  </app-subnav>
+
   <div class="section-header">
     <h2 class="section-title">Quick Launch</h2>
-    <button mat-button color="primary" (click)="toggleShowFavorites()">
-      {{ showFavorites ? 'Show All' : 'Show Favorites' }}
-    </button>
+    <div class="control-buttons">
+      <button mat-button color="primary" (click)="toggleShowFavorites()">
+        {{ showFavorites ? 'Show All' : 'Show Favorites' }}
+      </button>
+      <button mat-button color="accent" (click)="toggleViewMode()">
+        {{ viewMode === 'icon' ? 'Info View' : 'Icon View' }}
+      </button>
+    </div>
   </div>
 
   <lib-app-grid 
-    [items]="apps"
+    [items]="filteredApps"
     [showOnlyFavorites]="showFavorites"
+    [viewMode]="viewMode"
     (favoriteToggled)="onFavoriteToggled($event)">
   </lib-app-grid>
 </div>

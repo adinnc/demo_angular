@@ -1,17 +1,52 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { AppGridComponent, AppGridItem } from '@demo/shared-components';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { AppGridComponent, AppGridItem } from 'projects/shared-components/src/lib/app-grid/app-grid.component';
+import { SubnavComponent, SubnavItem } from 'projects/shared-components/src/lib/subnav/subnav.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, AppGridComponent],
+  imports: [CommonModule, MatButtonModule, AppGridComponent, SubnavComponent, FormsModule, MatFormFieldModule, MatInputModule, MatIconModule],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
   showFavorites = false;
+  activeView = 'all';
+  viewMode: 'icon' | 'info' = 'icon';
+  searchText: string = '';
+
+  subnavItems: SubnavItem[] = [
+    {
+      label: 'All Apps',
+      icon: 'apps',
+      action: () => this.setActiveView('all')
+    },
+    {
+      label: 'Favorites',
+      icon: 'star',
+      badge: {
+        value: 4,
+        color: 'accent'
+      },
+      action: () => this.setActiveView('favorites')
+    },
+    {
+      label: 'Recent',
+      icon: 'history',
+      action: () => this.setActiveView('recent')
+    },
+    {
+      label: 'Categories',
+      icon: 'category',
+      disabled: true
+    }
+  ];
 
   apps: AppGridItem[] = [
     { 
@@ -100,11 +135,41 @@ export class DashboardComponent {
     }
   ];
 
+  get filteredApps(): AppGridItem[] {
+    let filtered = this.apps;
+    if (this.searchText) {
+      const term = this.searchText.toLowerCase();
+      filtered = filtered.filter(a => a.name.toLowerCase().includes(term) || (a.info && a.info.toLowerCase().includes(term)));
+    }
+    switch (this.activeView) {
+      case 'favorites':
+        filtered = filtered.filter(a => a.isFavorite);
+        break;
+      case 'recent':
+        // Implement recent if needed. For now same as all.
+        break;
+      default:
+        break;
+    }
+    return filtered;
+  }
+
   toggleShowFavorites() {
     this.showFavorites = !this.showFavorites;
+    this.searchText = '';
+  }
+
+  setActiveView(view: string) {
+    this.activeView = view;
+    this.showFavorites = view === 'favorites';
+  }
+
+  toggleViewMode() {
+    this.viewMode = this.viewMode === 'icon' ? 'info' : 'icon';
   }
 
   onFavoriteToggled(app: AppGridItem) {
     app.isFavorite = !app.isFavorite;
+    // reset filter or not
   }
 }

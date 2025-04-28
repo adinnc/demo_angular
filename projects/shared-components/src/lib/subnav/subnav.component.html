@@ -1,0 +1,22 @@
+<div class="subnav-container" [ngClass]="{'subnav-dark': theme === 'dark'}">
+  <nav mat-tab-nav-bar [mat-stretch-tabs]="stretchTabs ? 'always' : false" [tabPanel]="tabPanel">
+    <a mat-tab-link
+       *ngFor="let item of items; let i = index"
+       [active]="i === activeItemIndex"
+       [disabled]="item.disabled"
+       [routerLink]="item.route ? [item.route] : null"
+       (click)="handleItemClick(item, i)"
+       [attr.aria-label]="getAriaLabel(item)">
+      
+      <div class="tab-content">
+        <mat-icon *ngIf="showIcons && item.icon" class="tab-icon">{{item.icon}}</mat-icon>
+        <span class="tab-label">{{item.label}}</span>
+        
+        <div *ngIf="item.badge" class="tab-badge" [ngClass]="'badge-' + (item.badge.color || 'primary')">
+          {{item.badge.value}}
+        </div>
+      </div>
+    </a>
+  </nav>
+  <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
+</div>

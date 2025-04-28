@@ -23,6 +23,7 @@ export interface AppGridItem {
 export class AppGridComponent {
   @Input() items: AppGridItem[] = [];
   @Input() showOnlyFavorites = false;
+  @Input() viewMode: 'icon' | 'info' = 'icon';
   @Output() favoriteToggled = new EventEmitter<AppGridItem>();
 
   get filteredItems() {

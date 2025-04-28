@@ -36,6 +36,7 @@
 
     .app-name {
       color: rgba(0, 0, 0, 0.95);
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
   }
 
@@ -191,6 +192,14 @@ mat-icon:not(.favorite-icon):not(.info-icon) {
   white-space: nowrap;
   letter-spacing: 0.2px;
   transition: color 0.3s ease;
+}
+
+.app-info {
+  margin-top: 8px;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.6);
+  text-align: center;
+  white-space: normal;
 }
 
 @media (max-width: 768px) {

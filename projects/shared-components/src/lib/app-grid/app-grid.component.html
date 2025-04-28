@@ -13,5 +13,8 @@
     
     <mat-icon [class]="item.color">{{item.icon}}</mat-icon>
     <span class="app-name">{{item.name}}</span>
+    <ng-container *ngIf="viewMode === 'info' && item.info">
+      <p class="app-info">{{item.info}}</p>
+    </ng-container>
   </div>
 </div>
